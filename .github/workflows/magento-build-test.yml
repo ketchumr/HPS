@@ -1,4 +1,4 @@
-name: m2-actions-test
+name: magento-build-test.yml
 
 on: workflow_dispatch
 

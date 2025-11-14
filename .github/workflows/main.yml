@@ -1,34 +1,19 @@
 name: m2-actions-test
 
 on: workflow_dispatch
-
 jobs:
   magento2-build:
     runs-on: ubuntu-latest
-    container: ubuntu
-    name: 'm2 tests & build'
-    services:
-      mysql:
-        image: docker://mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: Heaths
-          MYSQL_DATABASE: Pawn25
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-      elasticsearch:
-        image: docker://elasticsearch:7.1.0
-        ports:
-          - 9200:9200
-        options: -e="discovery.type=single-node" --health-cmd="curl http://localhost:9200/_cluster/health" --health-interval=10s --health-timeout=5s --health-retries=10
+    name: 'm2 tests & build'      
     steps:
-    - uses: actions/checkout@v1
-      with:
-        submodules: recursive
-    - name: 'launch magento2 build'
-      uses: MAD-I-T/magento-actions@v3.10
+    - uses: actions/checkout@v3
+    - name: 'install fresh magento repo'
+      if: ${{true}}
+      uses: MAD-I-T/magento-actions@v3.29
       env:
         COMPOSER_AUTH: ${{secrets.COMPOSER_AUTH}}
       with:
-        process: 'build'
-        elasticsearch: 1
+        process: 'install-magento'
+        magento_version: 2.4.7
+        #no_push: 1 //uncomment this to prevent src code from being pushed to repo
+

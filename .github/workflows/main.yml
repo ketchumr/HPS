@@ -2,20 +2,17 @@
 name: m2-actions-test
 
 on: workflow_dispatch
-
 jobs:
-  magento2-build:
+  magento2-install:
     runs-on: ubuntu-latest
-    name: 'm2 tests & build'      
+    name: 'magento install & push'      
     steps:
-    - uses: actions/checkout@v3
-    - name: 'install fresh magento repo'
-      if: ${{true}}
-      uses: MAD-I-T/magento-actions@master
+    - uses: actions/checkout@v2
+    - name: 'install fresh magento and copy to repo'
+      uses: MAD-I-T/magento-actions@v3.18
       env:
         COMPOSER_AUTH: ${{secrets.COMPOSER_AUTH}}
       with:
-        process: 'install-magento'
-        magento_version: 2.9.1 
-        #no_push: 1 //uncomment this to prevent src code from being pushed to repo
-
+        process: 'create-project'
+        magento_version: 2.3.0
+#     no_push: 1 //uncomment this to prevent the action from pushing src code to your repo
